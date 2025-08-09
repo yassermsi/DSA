@@ -1,6 +1,6 @@
 public class BubbleSort {
        public static void main(String[] args) {
-              int[] arr = {7, 3, 9, 12, 11};
+              int[] arr = { 7, 3, 9, 12, 11 };
               for (int i = 0; i < arr.length - 1; i++) {
                      boolean swapped = false;
                      for (int j = 0; j < arr.length - i - 1; j++)
