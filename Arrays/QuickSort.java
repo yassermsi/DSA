@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class QuickSort {
        public static void swap(int i, int j, int[] arr) {
               int temp = arr[i];
@@ -6,16 +8,19 @@ public class QuickSort {
        }
 
        public static int partition(int l, int h, int[] arr) {
+              Random r = new Random();
+              int idx = r.nextInt(l, h + 1);
+              swap(idx, h, arr);
               int pivot = arr[h];
-              int i = l - 1;
+              int i = l;
               for (int j = l; j < h; j++) {
                      if (arr[j] < pivot) {
-                            i++;
                             swap(i, j, arr);
+                            i++;
                      }
               }
-              swap(i + 1, h, arr);
-              return i + 1;
+              swap(i, h, arr);
+              return i;
        }
 
        public static void quickSort(int l, int h, int[] arr) {
