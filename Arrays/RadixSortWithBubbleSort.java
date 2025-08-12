@@ -48,13 +48,15 @@ public class RadixSortWithBubbleSort {
        }
 
        public static void main(String[] args) {
-              int[] arr = {170, 45, 75, 90, 802, 24, 2, 66};
+              int[] arr = { 170, 45, 75, 90, 802, 24, 2, 66 };
               System.out.print("Original array: ");
-              for (int n : arr) System.out.print(n + " ");
+              for (int n : arr)
+                     System.out.print(n + " ");
               System.out.println();
               radixSortWithBubbleSort(arr);
               System.out.print("Sorted array: ");
-              for (int n : arr) System.out.print(n + " ");
+              for (int n : arr)
+                     System.out.print(n + " ");
               System.out.println();
        }
 }
