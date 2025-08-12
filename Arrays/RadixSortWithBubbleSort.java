@@ -31,7 +31,7 @@ public class RadixSortWithBubbleSort {
                             idx = (n / exp) % 10;
                             radix[idx][count[idx]++] = n;
                      }
-                     for (int i = 0; i < radix.length; i++) {
+                     for (int i = 0; i < count.length; i++) {
                             int[] temp = new int[count[i]];
                             System.arraycopy(radix[i], 0, temp, 0, count[i]);
                             bubbleSort(temp);
