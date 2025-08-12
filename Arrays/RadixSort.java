@@ -11,19 +11,19 @@ public class RadixSort {
               System.out.println();
               int[][] radix = new int[10][arr.length];
               int[] count = new int[10];
-              int place = 1;
-              while (max / place > 0) {
+              int exp = 1, idx = 0;
+              while (max / exp > 0) {
                      for (int n : arr) {
-                            int index = (n / place) % 10;
-                            radix[index][count[index]++] = n;
+                            idx = (n / exp) % 10;
+                            radix[idx][count[idx]++] = n;
                      }
-                     int idx = 0;
+                     int index = 0;
                      for (int i = 0; i < radix.length; i++) {
                             for (int j = 0; j < count[i]; j++)
-                                   arr[idx++] = radix[i][j];
+                                   arr[index++] = radix[i][j];
                             count[i] = 0;
                      }
-                     place *= 10;
+                     exp *= 10;
               }
               System.out.print("Sorted array: ");
               for (int n : arr)
