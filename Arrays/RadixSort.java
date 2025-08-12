@@ -1,32 +1,32 @@
 public class RadixSort {
        public static void main(String[] args) {
-              int[] arr = { 33, 45, 40, 25, 17, 24 };
-              int[][] radix = new int[10][arr.length];
+              int[] arr = { 170, 45, 75, 90, 802, 24, 2, 66 };
+              System.out.print("Original array: ");
               int max = arr[0];
-              for (int n : arr)
+              for (int n : arr) {
                      if (n > max)
                             max = n;
+                     System.out.print(n + " ");
+              }
+              System.out.println();
+              int[][] radix = new int[10][arr.length];
+              int[] count = new int[10];
               int place = 1;
               while (max / place > 0) {
                      for (int n : arr) {
-                            int row = (n / place) % 10;
-                            int col = 0;
-                            while (col < arr.length && radix[row][col] != 0)
-                                   col++;
-                            radix[row][col] = n;
+                            int index = (n / place) % 10;
+                            radix[index][count[index]++] = n;
                      }
                      int idx = 0;
-                     for (int i = 0; i < radix.length; i++)
-                            for (int j = 0; j < radix[i].length; j++)
-                                   if (radix[i][j] != 0) {
-                                          arr[idx++] = radix[i][j];
-                                          radix[i][j] = 0;
-                                   }
+                     for (int i = 0; i < radix.length; i++) {
+                            for (int j = 0; j < count[i]; j++)
+                                   arr[idx++] = radix[i][j];
+                            count[i] = 0;
+                     }
                      place *= 10;
               }
               System.out.print("Sorted array: ");
-              for (int n : arr) {
+              for (int n : arr)
                      System.out.print(n + " ");
-              }
        }
 }
