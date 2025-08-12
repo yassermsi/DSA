@@ -13,12 +13,11 @@ public class QuickSort {
               swap(idx, h, arr);
               int pivot = arr[h];
               int i = l;
-              for (int j = l; j < h; j++) {
+              for (int j = l; j < h; j++)
                      if (arr[j] < pivot) {
                             swap(i, j, arr);
                             i++;
                      }
-              }
               swap(i, h, arr);
               return i;
        }
@@ -36,8 +35,7 @@ public class QuickSort {
               int h = arr.length - 1;
               quickSort(0, h, arr);
               System.out.print("Sorted Array: ");
-              for (int i : arr) {
+              for (int i : arr)
                      System.out.print(i + " ");
-              }
        }
 }
