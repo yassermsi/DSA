@@ -2,18 +2,19 @@ import java.util.Arrays;
 
 public class MergeSort {
        public static int[] merge(int[] left, int[] right) {
-              int[] result = new int[left.length + right.length];
+              int l = left.length, r = right.length;
+              int[] result = new int[l + r];
               int i = 0, j = 0, k = 0;
-              while (i < left.length && j < right.length) {
+              while (i < l && j < r) {
                      if (left[i] < right[j]) {
                             result[k++] = left[i++];
                      } else {
                             result[k++] = right[j++];
                      }
               }
-              while (i < left.length)
+              while (i < l)
                      result[k++] = left[i++];
-              while (j < right.length)
+              while (j < r)
                      result[k++] = right[j++];
               return result;
        }
