@@ -1,4 +1,7 @@
 {
        "java.project.sourcePaths": 
-       ["Arrays"]
+       [
+              "Arrays",
+              "LinkedLists"
+       ]
 }
