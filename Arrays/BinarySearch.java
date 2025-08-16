@@ -3,13 +3,12 @@ public class BinarySearch {
               if (start > end)
                      return -1;
               int mid = (start + end) / 2;
-              if (arr[mid] > target) {
+              if (arr[mid] > target)
                      return binarySearch(arr, start, mid - 1, target);
-              } else if (arr[mid] < target) {
+              else if (arr[mid] < target)
                      return binarySearch(arr, mid + 1, end, target);
-              } else {
+              else
                      return mid;
-              }
        }
 
        public static void main(String[] args) {
