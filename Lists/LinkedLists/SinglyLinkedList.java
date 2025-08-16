@@ -1,3 +1,5 @@
+package LinkedLists;
+
 public class SinglyLinkedList {
        static class Node {
               int data;

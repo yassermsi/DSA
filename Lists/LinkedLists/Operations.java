@@ -1,3 +1,5 @@
+package LinkedLists;
+
 public class Operations {
        static class Node {
               int data;
