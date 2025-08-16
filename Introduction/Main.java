@@ -30,7 +30,7 @@ public class Main {
               carPrices.put(cars.get(3), 42500.0);
               Iterator<String> it = cars.iterator();
               int i = 0;
-              while (it.hasNext() && i < cars.size()) 
+              while (it.hasNext() && i < cars.size())
                      System.out.println(it.next() + " : " + carPrices.get(cars.get(i++)));
        }
 }
