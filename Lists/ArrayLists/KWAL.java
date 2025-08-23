@@ -24,6 +24,18 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
        }
 
        public void reallocate() {
+              /*
+               * capacity *= 2;
+               * E[] temp = System.arraycopy(data, 0, temp, 0, capacity);
+               * data = temp
+               */
+              /*
+               * capacity *= 2;
+               * E[] temp = (E[]) new Comparable(capacity);
+               * for (int i = 0; i < size; i++)
+               * temp[i] = data[i];
+               * data = temp;
+               */
               capacity *= 2;
               data = Arrays.copyOf(data, capacity);
        }
@@ -103,20 +115,22 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
               int index = indexOf(obj);
               if (index == -1)
                      return false;
-              remove(index);
-              return true;
+              else {
+                     remove(index);
+                     return true;
+              }
        }
 
        public String toString() {
-              String res = "";
-              res += "[";
+              StringBuilder str = new StringBuilder();
+              str.append("[");
               for (int i = 0; i < size; i++) {
-                     res += data[i];
+                     str.append(data[i]);
                      if (i != size - 1)
-                            res += ", ";
+                            str.append(", ");
               }
-              res += "]";
-              return res;
+              str.append("]");
+              return str.toString();
        }
 
        @Override
@@ -159,38 +173,52 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
                      if (data[i].compareTo(min) < 0)
                             min = data[i];
               return min.compareTo(max) > 0;
-
        }
 
        public void removeSmallest() {
-              if (isEmpty())
+              if (size == 0)
                      return;
-              E min = data[0];
+              int minIndex = 0;
               for (int i = 1; i < size; i++)
-                     if (data[i].compareTo(min) < 0)
-                            min = data[i];
-              remove(min);
+                     if ((Integer) data[i] < (Integer) data[minIndex])
+                            minIndex = i;
+              for (int i = minIndex + 1; i < size; i++)
+                     data[i - 1] = data[i];
+              data[size - 1] = null;
+              size--;
+              /*
+               * if (isEmpty())
+               * return;
+               * E min = data[0];
+               * for (int i = 1; i < size; i++)
+               * if (data[i].compareTo(min) < 0)
+               * min = data[i];
+               * remove(min);
+               */
        }
 
        public boolean removeAll(E obj) {
-              boolean isFound = false;
               for (int i = 0; i < size; i++)
-                     if (data[i].equals(obj)) {
+                     if (data[i].equals(obj))
                             remove(data[i]);
-                            isFound = true;
-                     }
-              return isFound;
+              return true;
        }
 
        public boolean compareReverse(KWArrayList<E> Arr) {
-              if (this.isEmpty() || Arr.isEmpty())
-                     return false;
-              if (this.size() != Arr.size())
+              if (this.size == 0 || Arr.size == 0)
                      return false;
               for (int i = 0, j = this.size - 1; i < this.size && j >= 0; i++, j--)
-                     if (this.data[i].compareTo(Arr.data[j]) != 0)
+                     if (!this.data[i].equals(Arr.data[j]))
                             return false;
               return true;
+              /*
+               * if (this.isEmpty() || Arr.isEmpty())
+               * return false;
+               * for (int i = 0, j = this.size - 1; i < this.size && j >= 0; i++, j--)
+               * if (this.data[i].compareTo(Arr.data[j]) != 0)
+               * return false;
+               * return true;
+               */
        }
 }
 
@@ -201,10 +229,10 @@ class ListApplication {
                      return false;
               int i;
               for (i = 0; i < index; i++)
-                     if (list1.get(i).compareTo(item) > 0)
+                     if (list1.get(i) > item)
                             return false;
               for (i = index + 1; i < list1.size(); i++)
-                     if (list1.get(i).compareTo(item) < 0)
+                     if (list1.get(i) < item)
                             return false;
               return true;
        }
@@ -233,7 +261,7 @@ public class KWAL {
               for (i = 0; i < L.size(); i++)
                      if (L.get(i).equals(obj))
                             break;
-              for (int j = i + 1; j < L.size(); j++)
+              for (int j = L.size(); j > i; j--)
                      if (L.get(j).equals(obj))
                             L.remove(obj);
               return true;
