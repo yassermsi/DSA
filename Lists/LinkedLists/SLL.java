@@ -1,6 +1,6 @@
 package LinkedLists;
 
-class SingleLinkedList<E extends Comparable<E>> implements Comparable<SingleLinkedList<E>> {
+class SingleLinkedList<E> {
        private Node<E> head;
        private int size;
 
@@ -57,14 +57,13 @@ class SingleLinkedList<E extends Comparable<E>> implements Comparable<SingleLink
        }
 
        private E removeAfter(Node<E> ref) {
-              if (ref.next == null)
-                     return null;
-              else {
+              if (ref.next != null) {
                      E removed = ref.next.data;
                      ref.next = ref.next.next;
                      size--;
                      return removed;
-              }
+              } else
+                     return null;
        }
 
        private Node<E> getNode(int index) {
@@ -122,7 +121,7 @@ class SingleLinkedList<E extends Comparable<E>> implements Comparable<SingleLink
                       * }
                       * else
                       */
-                     if (item.equals(cur.data))
+                     if ((cur.data).equals(item))
                             return index;
                      index++;
                      cur = cur.next;
@@ -298,23 +297,34 @@ class SingleLinkedList<E extends Comparable<E>> implements Comparable<SingleLink
        }
 
        public boolean removeAll(E item) {
+              if (isEmpty())
+                     return false;
               boolean removed = false;
-              while (head != null && head.data.equals(item)) {
-                     head.data = null;
-                     head = head.next;
-                     size--;
-                     removed = true;
-              }
               Node<E> cur = head;
               while (cur != null) {
-                     if (cur.next != null && (cur.next.data).equals(item)) {
-                            cur.next = cur.next.next;
-                            size--;
+                     if ((cur.data).equals(item)) {
+                            remove(item);
                             removed = true;
-                     } else
-                            cur = cur.next;
+                     }
+                     cur = cur.next;
               }
               return removed;
+              /*
+               * while (head != null && (head.data).equals(item)) {
+               * head = head.next;
+               * size--;
+               * removed = true;
+               * }
+               * Node<E> cur = head;
+               * while (cur != null) {
+               * if (cur.next != null && (cur.next.data).equals(item)) {
+               * cur.next = cur.next.next;
+               * size--;
+               * removed = true;
+               * } else
+               * cur = cur.next;
+               * }
+               */
               /*
                * Node<E> ptr1 = head;
                * Node<E> ptr2 = head.next;
@@ -338,21 +348,20 @@ class SingleLinkedList<E extends Comparable<E>> implements Comparable<SingleLink
                      cur = cur.next;
               Node<E> temp = cur.next;
               cur.next = null;
-              head = new Node<>(temp.data, head);
+              temp.next = head;
               head = temp;
               return true;
               /*
                * if (isEmpty() || size == 1)
                * return false;
                * add(remove(size - 1));
-               * return true;
                */
        }
 
        public void printAndReplaceLarger(E value, E rpItem) {
               Node<E> cur = head;
               while (cur != null) {
-                     if ((cur.data).compareTo(value) > 0) {
+                     if (((Comparable) cur.data).compareTo((Comparable) value) > 0) {
                             System.out.print(cur.data + " ");
                             cur.data = rpItem;
                      }
@@ -366,38 +375,18 @@ class SingleLinkedList<E extends Comparable<E>> implements Comparable<SingleLink
               E max = head.data;
               Node<E> cur = head.next;
               for (int i = 1; i < size / 2; i++) {
-                     if ((cur.data).compareTo(max) > 0)
+                     if (((Comparable) cur.data).compareTo((Comparable) max) > 0)
                             max = cur.data;
                      cur = cur.next;
               }
               E min = cur.data;
               cur = cur.next;
               for (int i = size / 2 + 1; i < size; i++) {
-                     if ((cur.data).compareTo(min) < 0)
+                     if (((Comparable) cur.data).compareTo((Comparable) min) < 0)
                             min = cur.data;
                      cur = cur.next;
               }
-              return min.compareTo(max) > 0;
-       }
-
-       @Override
-
-       public int compareTo(SingleLinkedList<E> other) {
-              Node<E> ptr1 = this.head;
-              Node<E> ptr2 = other.head;
-              while (ptr1 != null && ptr2 != null) {
-                     int cmp = ptr1.data.compareTo(ptr2.data);
-                     if (cmp != 0)
-                            return cmp;
-                     ptr1 = ptr1.next;
-                     ptr2 = ptr2.next;
-              }
-              if (ptr1 != null)
-                     return 1;
-              else if (ptr2 != null)
-                     return -1;
-              else
-                     return 0;
+              return ((Comparable) min).compareTo((Comparable) max) > 0;
        }
 }
 

@@ -2,7 +2,7 @@ package ArrayLists;
 
 import java.util.Arrays;
 
-class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>> {
+class KWArrayList<E> {
        private static final int INITIAL_CAPACITY = 10;
        private E[] data;
        private int size;
@@ -10,7 +10,7 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
 
        public KWArrayList() {
               capacity = INITIAL_CAPACITY;
-              data = (E[]) new Comparable[capacity];
+              data = (E[]) new Object[capacity];
               size = 0;
        }
 
@@ -19,7 +19,7 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
                      capacity = INITIAL_CAPACITY;
               else
                      capacity = cap;
-              data = (E[]) new Comparable[capacity];
+              data = (E[]) new Object[capacity];
               size = 0;
        }
 
@@ -31,7 +31,7 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
                */
               /*
                * capacity *= 2;
-               * E[] temp = (E[]) new Comparable(capacity);
+               * E[] temp = (E[]) new Object(capacity);
                * for (int i = 0; i < size; i++)
                * temp[i] = data[i];
                * data = temp;
@@ -133,24 +133,17 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
               return str.toString();
        }
 
-       @Override
-
-       public int compareTo(KWArrayList<E> other) {
-              int min = Math.min(this.size(), other.size());
-              for (int i = 0; i < min; i++) {
-                     int cmp = this.data[i].compareTo(other.data[i]);
-                     if (cmp != 0)
-                            return cmp;
-              }
-              return Integer.compare(this.size(), other.size());
-       }
-
        public int lastIndexOf(E obj) {
               int index = -1;
               for (int i = 0; i < size; i++)
                      if (data[i].equals(obj))
                             index = i;
               return index;
+              /*
+               * for (int i = size - 1; i >= 0; i--)
+               * if (data[i].equals(obj))
+               * return i;
+               */
        }
 
        public boolean setAll(E value, E rpValue) {
@@ -167,12 +160,12 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
               E min = data[size / 2];
               int i;
               for (i = 1; i < size / 2; i++)
-                     if (data[i].compareTo(max) > 0)
+                     if (((Comparable) data[i]).compareTo((Comparable) max) > 0)
                             max = data[i];
               for (i = size / 2 + 1; i < size; i++)
-                     if (data[i].compareTo(min) < 0)
+                     if (((Comparable) data[i]).compareTo((Comparable) min) < 0)
                             min = data[i];
-              return min.compareTo(max) > 0;
+              return ((Comparable) min).compareTo((Comparable) max) > 0;
        }
 
        public void removeSmallest() {
@@ -180,7 +173,7 @@ class KWArrayList<E extends Comparable<E>> implements Comparable<KWArrayList<E>>
                      return;
               int minIndex = 0;
               for (int i = 1; i < size; i++)
-                     if ((Integer) data[i] < (Integer) data[minIndex])
+                     if (((Comparable) data[i]).compareTo((Comparable) data[minIndex]) < 0)
                             minIndex = i;
               for (int i = minIndex + 1; i < size; i++)
                      data[i - 1] = data[i];
@@ -256,29 +249,29 @@ class ListApplication {
 }
 
 public class KWAL {
-       public static <E extends Comparable<E>> boolean removeDuplicate(KWArrayList<E> L, E obj) {
+       public static <E> boolean removeDuplicate(KWArrayList<E> L, E obj) {
               int i;
               for (i = 0; i < L.size(); i++)
                      if (L.get(i).equals(obj))
                             break;
-              for (int j = L.size(); j > i; j--)
+              for (int j = i + 1; j < L.size(); j++)
                      if (L.get(j).equals(obj))
-                            L.remove(obj);
+                            L.remove(j);
               return true;
        }
 
-       public static <E extends Comparable<E>> boolean compareHalfs(KWArrayList<E> array) {
+       public static <E> boolean compareHalfs(KWArrayList<E> array) {
               if (array.size() < 2)
                      return false;
               E max = array.get(0);
               E min = array.get(array.size() / 2);
               for (int i = 1; i < array.size() / 2; i++)
-                     if (array.get(i).compareTo(max) > 0)
+                     if (((Comparable) array.get(i)).compareTo((Comparable) max) > 0)
                             max = array.get(i);
               for (int i = array.size() / 2 + 1; i < array.size(); i++)
-                     if (array.get(i).compareTo(min) < 0)
+                     if (((Comparable) array.get(i)).compareTo((Comparable) min) < 0)
                             min = array.get(i);
-              return min.compareTo(max) > 0;
+              return ((Comparable) min).compareTo((Comparable) max) > 0;
        }
 
        public static void main(String[] args) {
