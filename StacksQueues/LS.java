@@ -6,7 +6,7 @@ public class LS<E> implements StackInt<E> {
        private static class Node<E> {
               private E data;
               private Node<E> next;
-              
+
               private Node(E data) {
                      this.data = data;
                      next = null;
@@ -30,7 +30,7 @@ public class LS<E> implements StackInt<E> {
                      topOfStack = ptr;
                      Node<E> ptr1 = other.topOfStack.next;
                      Node<E> ptr2 = topOfStack;
-                     while(ptr1 != null) {
+                     while (ptr1 != null) {
                             ptr = new Node<>(ptr1.data);
                             ptr2 = ptr;
                             ptr1 = ptr1.next;
@@ -57,7 +57,7 @@ public class LS<E> implements StackInt<E> {
 
        @Override
        public E peek() {
-              if (isEmpty()) 
+              if (isEmpty())
                      throw new NoSuchElementException();
               return topOfStack.data;
        }

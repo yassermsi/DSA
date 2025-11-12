@@ -80,17 +80,17 @@ class StackEx {
                             s3.push(num);
                      else if (num < 0)
                             s4.push(num);
-              }        
+              }
               while (!s2.isEmpty()) {
                      int num = s2.pop();
                      if (num > 0)
                             s3.push(num);
                      else if (num < 0)
                             s4.push(num);
-              } 
-              while(!s3.isEmpty())
+              }
+              while (!s3.isEmpty())
                      s1.push(s3.pop());
-              while(!s4.isEmpty())
+              while (!s4.isEmpty())
                      s2.push(s4.pop());
        }
 
@@ -131,7 +131,7 @@ class StackApplication {
                      E item = s1.pop();
                      if (((Comparable) item).compareTo((Comparable) value) > 0)
                             s2.push(item);
-                     else 
+                     else
                             s3.push(item);
               }
 
@@ -173,7 +173,7 @@ class StackApplication {
               ArrayStack<Integer> temp = new ArrayStack<>();
               while (!St1.isEmpty())
                      temp.push(St1.pop() + value);
-              while (!temp.isEmpty()) 
+              while (!temp.isEmpty())
                      St1.push(temp.pop());
               return true;
        }
@@ -189,7 +189,7 @@ class StackApplication {
                             temp.push('>');
                      else if (v1 < v2)
                             temp.push('<');
-                     else 
+                     else
                             temp.push('=');
               }
               while (!temp.isEmpty())
@@ -233,7 +233,7 @@ public class AS {
               }
               while (!s2.isEmpty())
                      s1.push(s2.pop());
-              while(!s1.isEmpty())
+              while (!s1.isEmpty())
                      System.out.print(s1.pop() + " ");
        }
 }

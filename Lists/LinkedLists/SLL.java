@@ -403,8 +403,8 @@ class SingleLinkedList<E> {
        public int printGreater(E item) {
               int count = 0;
               Node<E> cur = head;
-              while(cur != null) {
-                     if (((Comparable)cur.data).compareTo((Comparable) item) > 0) {
+              while (cur != null) {
+                     if (((Comparable) cur.data).compareTo((Comparable) item) > 0) {
                             System.out.print(cur.data + " ");
                             count++;
                      }

@@ -435,7 +435,7 @@ class KWLinkedList<E> {
        }
 
        public boolean removeTheCorrespondingIndex(KWLinkedList<Character> list) {
-              if (list.head == null) 
+              if (list.head == null)
                      return false;
               ListIterator<Character> iter1 = list.listIterator();
               ListIterator<E> iter2 = this.listIterator();
