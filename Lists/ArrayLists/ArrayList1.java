@@ -12,7 +12,7 @@ public class ArrayList1 {
               for (int i = 0; i < arrayList1.size(); i++)
                      System.out.print(arrayList1.get(i) + " ");
 
-              System.out.println("\n");
+              System.out.println();
               arrayList1.remove(2);
               int loc = arrayList1.indexOf(30);
               if (loc != -1)
@@ -20,8 +20,6 @@ public class ArrayList1 {
               else
                      System.out.println("30 Not Found");
               arrayList1.add(3, 100);
-
-              System.out.println();
               for (int i = 0; i < arrayList1.size(); i++)
                      System.out.print(arrayList1.get(i) + " ");
               System.out.println();

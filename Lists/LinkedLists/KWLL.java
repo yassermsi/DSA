@@ -53,18 +53,20 @@ class KWLinkedList<E> {
        }
 
        public boolean add(E item) {
-              Node<E> temp = new Node<>(item);
-              if (tail == null) {
-                     head = temp;
-                     tail = temp;
-              } else {
-                     temp.prev = tail;
-                     tail.next = temp;
-                     tail = temp;
-              }
-              size++;
-              // addLast(item);
+              addLast(item);
               return true;
+              /*
+               * Node<E> temp = new Node<>(item);
+               * if (tail == null) {
+               * head = temp;
+               * tail = temp;
+               * } else {
+               * temp.prev = tail;
+               * tail.next = temp;
+               * tail = temp;
+               * }
+               * size++;
+               */
        }
 
        public E getFirst() {
@@ -96,7 +98,7 @@ class KWLinkedList<E> {
 
               private KWListIter(int index) {
                      if (index < 0 || index > size)
-                            throw new IndexOutOfBoundsException(index);
+                            throw new IndexOutOfBoundsException();
                      nextItem = head;
                      for (int i = 0; i < index; i++)
                             nextItem = nextItem.next;
@@ -106,7 +108,7 @@ class KWLinkedList<E> {
 
               private KWListIter(KWListIter iter) {
                      if (iter.nextIndex() < 0 || iter.nextIndex() > size)
-                            throw new IndexOutOfBoundsException(iter.nextIndex());
+                            throw new IndexOutOfBoundsException();
                      nextItem = head;
                      for (int i = 0; i < iter.nextIndex(); i++)
                             nextItem = nextItem.next;
@@ -345,6 +347,18 @@ class KWLinkedList<E> {
                             return true;
                      }
               return false;
+              /*
+               * Node<E> cur = head;
+               * while (cur != null) {
+               * if (cur.data.equals(item)) {
+               * Node<E> temp = new Node(item1);
+               * temp.prev = cur.prev;
+               * cur.prev.next = temp;
+               * temp.next = cur;
+               * cur.prev = temp;
+               * }
+               * }
+               */
        }
 
        public boolean findAll(E item, KWLinkedList<E> list2) {
@@ -400,6 +414,8 @@ class KWLinkedList<E> {
        }
 
        public boolean checkForEquality() {
+              if (head == null)
+                     return false;
               KWListIter iter1 = new KWListIter();
               KWListIter iter2 = new KWListIter(size);
               while (iter1.nextIndex() < size / 2)
@@ -419,14 +435,49 @@ class KWLinkedList<E> {
        }
 
        public boolean removeTheCorrespondingIndex(KWLinkedList<Character> list) {
-              ListIterator<Character> iter = list.listIterator();
-              Character ch = 'x';
-              while (iter.hasNext())
-                     if (iter.next().equals(ch)) {
-                            iter.remove();
+              if (list.head == null) 
+                     return false;
+              ListIterator<Character> iter1 = list.listIterator();
+              ListIterator<E> iter2 = this.listIterator();
+              while (iter1.hasNext())
+                     if (iter1.next().equals('x')) {
+                            iter2.remove();
                             return true;
+                     } else {
+                            iter2.next();
                      }
               return false;
+       }
+
+       public void insertFirstLast(E elem) {
+              Node<E> temp = new Node(elem);
+              if (((Comparable) elem).compareTo((Comparable) head.data) > 0 &&
+                            ((Comparable) elem).compareTo(tail.data) < 0) {
+                     temp.next = head;
+                     head.prev = temp;
+                     head = temp;
+              } else {
+                     temp.prev = tail;
+                     tail.next = temp;
+                     tail = temp;
+              }
+              size++;
+              /*
+               * if (((Comparable) head.data).compareTo((Comparable) elem) < 0 &&
+               * ((Comparable) tail.data).compareTo(elem) > 0)
+               * addFirst(elem);
+               * else
+               * addLast(elem);
+               */
+       }
+}
+
+class Application<E> {
+       public void insertInMiddle(KWLinkedList<E> l, E value) {
+              ListIterator<E> iter = l.listIterator();
+              for (int i = 0; i < l.size(); i++)
+                     iter.next();
+              iter.add(value);
        }
 }
 

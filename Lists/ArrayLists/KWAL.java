@@ -4,13 +4,13 @@ import java.util.Arrays;
 
 class KWArrayList<E> {
        private static final int INITIAL_CAPACITY = 10;
-       private E[] data;
+       private E[] theData;
        private int size;
        private int capacity;
 
        public KWArrayList() {
               capacity = INITIAL_CAPACITY;
-              data = (E[]) new Object[capacity];
+              theData = (E[]) new Object[capacity];
               size = 0;
        }
 
@@ -19,31 +19,38 @@ class KWArrayList<E> {
                      capacity = INITIAL_CAPACITY;
               else
                      capacity = cap;
-              data = (E[]) new Object[capacity];
+              theData = (E[]) new Object[capacity];
               size = 0;
+       }
+
+       public KWArrayList(KWArrayList<E> list) {
+              this.capacity = list.capacity;
+              this.size = list.size;
+              for (int i = 0; i < size; i++)
+                     this.theData[i] = list.theData[i];
        }
 
        public void reallocate() {
               /*
                * capacity *= 2;
-               * E[] temp = System.arraycopy(data, 0, temp, 0, capacity);
-               * data = temp
+               * E[] temp = System.arraycopy(theData, 0, temp, 0, capacity);
+               * theData = temp
                */
               /*
                * capacity *= 2;
                * E[] temp = (E[]) new Object(capacity);
                * for (int i = 0; i < size; i++)
-               * temp[i] = data[i];
-               * data = temp;
+               * temp[i] = theData[i];
+               * theData = temp;
                */
               capacity *= 2;
-              data = Arrays.copyOf(data, capacity);
+              theData = Arrays.copyOf(theData, capacity);
        }
 
        public boolean add(E anEntry) {
               if (size == capacity)
                      reallocate();
-              data[size++] = anEntry;
+              theData[size++] = anEntry;
               return true;
        }
 
@@ -53,35 +60,35 @@ class KWArrayList<E> {
               if (size == capacity)
                      reallocate();
               for (int i = size; i > index; i--)
-                     data[i] = data[i - 1];
-              data[index] = anEntry;
+                     theData[i] = theData[i - 1];
+              theData[index] = anEntry;
               size++;
        }
 
        public E get(int index) {
               if (index < 0 || index >= size)
                      throw new ArrayIndexOutOfBoundsException(index);
-              return data[index];
+              return theData[index];
        }
 
        public E set(int index, E newValue) {
               if (index < 0 || index >= size)
                      throw new ArrayIndexOutOfBoundsException(index);
-              E old = data[index];
-              data[index] = newValue;
-              return old;
+              E v = theData[index];
+              theData[index] = newValue;
+              return v;
        }
 
        public int indexOf(E item) {
               for (int i = 0; i < size; i++)
-                     if (data[i].equals(item))
+                     if (theData[i].equals(item))
                             return i;
               return -1;
        }
 
        public boolean contains(E obj) {
               for (int i = 0; i < size; i++)
-                     if (data[i].equals(obj))
+                     if (theData[i].equals(obj))
                             return true;
               return false;
        }
@@ -95,18 +102,22 @@ class KWArrayList<E> {
        }
 
        public void clear() {
-              for (int i = 0; i < size; i++)
-                     data[i] = null;
+              Arrays.fill(theData, 0, size, null);
               size = 0;
+              /*
+               * for (int i = 0; i < size; i++)
+               * theData[i] = null;
+               * size = 0;
+               */
        }
 
        public E remove(int index) {
               if (index < 0 || index >= size)
                      throw new ArrayIndexOutOfBoundsException(index);
-              E removed = data[index];
+              E removed = theData[index];
               for (int i = index + 1; i < size; i++)
-                     data[i - 1] = data[i];
-              data[size - 1] = null;
+                     theData[i - 1] = theData[i];
+              theData[size - 1] = null;
               size--;
               return removed;
        }
@@ -125,7 +136,7 @@ class KWArrayList<E> {
               StringBuilder str = new StringBuilder();
               str.append("[");
               for (int i = 0; i < size; i++) {
-                     str.append(data[i]);
+                     str.append(theData[i]);
                      if (i != size - 1)
                             str.append(", ");
               }
@@ -136,35 +147,35 @@ class KWArrayList<E> {
        public int lastIndexOf(E obj) {
               int index = -1;
               for (int i = 0; i < size; i++)
-                     if (data[i].equals(obj))
+                     if (theData[i].equals(obj))
                             index = i;
               return index;
               /*
                * for (int i = size - 1; i >= 0; i--)
-               * if (data[i].equals(obj))
+               * if (theData[i].equals(obj))
                * return i;
                */
        }
 
        public boolean setAll(E value, E rpValue) {
               for (int i = 0; i < size; i++)
-                     if (data[i].equals(value))
-                            data[i] = rpValue;
+                     if (theData[i].equals(value))
+                            theData[i] = rpValue;
               return true;
        }
 
        public boolean compareHalfs() {
               if (size() < 2)
                      return false;
-              E max = data[0];
-              E min = data[size / 2];
+              E max = theData[0];
+              E min = theData[size / 2];
               int i;
               for (i = 1; i < size / 2; i++)
-                     if (((Comparable) data[i]).compareTo((Comparable) max) > 0)
-                            max = data[i];
+                     if (((Comparable) theData[i]).compareTo((Comparable) max) > 0)
+                            max = theData[i];
               for (i = size / 2 + 1; i < size; i++)
-                     if (((Comparable) data[i]).compareTo((Comparable) min) < 0)
-                            min = data[i];
+                     if (((Comparable) theData[i]).compareTo((Comparable) min) < 0)
+                            min = theData[i];
               return ((Comparable) min).compareTo((Comparable) max) > 0;
        }
 
@@ -173,27 +184,50 @@ class KWArrayList<E> {
                      return;
               int minIndex = 0;
               for (int i = 1; i < size; i++)
-                     if (((Comparable) data[i]).compareTo((Comparable) data[minIndex]) < 0)
+                     if (((Comparable) theData[i]).compareTo((Comparable) theData[minIndex]) < 0)
                             minIndex = i;
               for (int i = minIndex + 1; i < size; i++)
-                     data[i - 1] = data[i];
-              data[size - 1] = null;
+                     theData[i - 1] = theData[i];
+              theData[size - 1] = null;
               size--;
               /*
                * if (isEmpty())
                * return;
-               * E min = data[0];
+               * E min = theData[0];
                * for (int i = 1; i < size; i++)
-               * if (data[i].compareTo(min) < 0)
-               * min = data[i];
+               * if (theData[i].compareTo(min) < 0)
+               * min = theData[i];
                * remove(min);
                */
        }
 
        public boolean removeAll(E obj) {
+              boolean isFound = false;
+              int index = 0;
+              while (index < size) {
+                     if (obj.equals(theData[index])) {
+                            isFound = true;
+                            for (int i = index + 1; i < size; i++)
+                                   theData[i - 1] = theData[i];
+                            theData[size - 1] = null;
+                            size--;
+                     }
+              }
+              return isFound;
+              /*
+               * for (int i = 0; i < size; i++)
+               * if (theData[i].equals(obj))
+               * remove(theData[i]);
+               * return true;
+               */
+       }
+
+       public boolean equals(KWArrayList<E> list) {
+              if (this.size != list.size)
+                     return false;
               for (int i = 0; i < size; i++)
-                     if (data[i].equals(obj))
-                            remove(data[i]);
+                     if (!list.theData[i].equals(theData[i]))
+                            return false;
               return true;
        }
 
@@ -201,14 +235,14 @@ class KWArrayList<E> {
               if (this.size == 0 || Arr.size == 0)
                      return false;
               for (int i = 0, j = this.size - 1; i < this.size && j >= 0; i++, j--)
-                     if (!this.data[i].equals(Arr.data[j]))
+                     if (!this.theData[i].equals(Arr.theData[j]))
                             return false;
               return true;
               /*
                * if (this.isEmpty() || Arr.isEmpty())
                * return false;
                * for (int i = 0, j = this.size - 1; i < this.size && j >= 0; i++, j--)
-               * if (this.data[i].compareTo(Arr.data[j]) != 0)
+               * if (this.theData[i].compareTo(Arr.theData[j]) != 0)
                * return false;
                * return true;
                */
@@ -245,6 +279,54 @@ class ListApplication {
                             return false;
               }
               return true;
+       }
+}
+
+class KWArryApp<E> {
+       public int replaceFromSecond(KWArrayList<E> l1, E Item, E replaceItem) {
+              if (l1.isEmpty())
+                     return 0;
+              int i;
+              for (i = 0; i < l1.size(); i++)
+                     if (l1.get(i).equals(Item))
+                            break;
+              int count = 0;
+              for (int j = i + 1; j < l1.size(); j++)
+                     if (l1.get(i).equals(Item)) {
+                            l1.set(i, Item);
+                            count++;
+                     }
+              return count;
+              /*
+               * if (l1.size() < 2)
+               * return 0;
+               * int index = l1.indexOf(Item);
+               * if (index == -1)
+               * return 0;
+               * int count = 0;
+               * for (int i = index + 1; i < l1.size(); i++)
+               * if (l1.get(i).equals(Item)) {
+               * l1.set(i, replaceItem);
+               * count++;
+               * }
+               */
+       }
+
+       public boolean removeAll(E item, KWArrayList<E> l) {
+              if (l.isEmpty())
+                     return false;
+              /*
+               * if (l.indexOf(item) == -1)
+               * return false;
+               */
+              boolean isFound = false;
+              for (int i = 0; i < l.size(); i++)
+                     if (l.get(i).equals(item)) {
+                            l.remove(i);
+                            isFound = true;
+                            i--;
+                     }
+              return isFound;
        }
 }
 

@@ -9,6 +9,25 @@ class SingleLinkedList<E> {
               size = 0;
        }
 
+       public SingleLinkedList(SingleLinkedList<E> list) {
+              if (list.head == null) {
+                     this.head = null;
+                     this.size = 0;
+              } else {
+                     Node<E> ptr = list.head;
+                     Node<E> ptr1 = new Node<E>(ptr.data);
+                     this.head = ptr1;
+                     ptr = ptr.next;
+                     while (ptr != null) {
+                            Node<E> ptr2 = new Node<E>(ptr.data);
+                            ptr1.next = ptr2;
+                            ptr1 = ptr2;
+                            ptr = ptr.next;
+                     }
+                     this.size = list.size;
+              }
+       }
+
        private static class Node<E> {
               private E data;
               private Node<E> next;
@@ -40,8 +59,7 @@ class SingleLinkedList<E> {
                * temp.next = ref.next;
                * ref.next = temp;
                */
-              Node<E> temp = new Node<>(item, ref.next);
-              ref.next = temp;
+              ref.next = new Node<>(item, ref.next);
               size++;
        }
 
@@ -78,8 +96,8 @@ class SingleLinkedList<E> {
        }
 
        public boolean isEmpty() {
-              // return head == null;
-              return size == 0;
+              return head == null;
+              // return size == 0;
        }
 
        public E get(int index) {
@@ -91,9 +109,9 @@ class SingleLinkedList<E> {
        public E set(int index, E item) {
               if (index < 0 || index >= size)
                      throw new ArrayIndexOutOfBoundsException(index);
-              E old = getNode(index).data;
+              E v = getNode(index).data;
               getNode(index).data = item;
-              return old;
+              return v;
        }
 
        public void add(int index, E item) {
@@ -114,13 +132,6 @@ class SingleLinkedList<E> {
               int index = 0;
               Node<E> cur = head;
               while (cur != null) {
-                     /*
-                      * if (item == null) {
-                      * if (cur.data == null)
-                      * return index;
-                      * }
-                      * else
-                      */
                      if ((cur.data).equals(item))
                             return index;
                      index++;
@@ -279,8 +290,7 @@ class SingleLinkedList<E> {
               Node<E> cur = head;
               while (cur != null) {
                      if ((cur.data).equals(v1)) {
-                            Node<E> temp = new Node<>(v2, cur.next);
-                            cur.next = temp;
+                            cur.next = new Node<>(v2, cur.next);
                             size++;
                             return true;
                      }
@@ -354,7 +364,8 @@ class SingleLinkedList<E> {
               /*
                * if (isEmpty() || size == 1)
                * return false;
-               * add(remove(size - 1));
+               * add(0, remove(size - 1));
+               * return true;
                */
        }
 
@@ -387,6 +398,19 @@ class SingleLinkedList<E> {
                      cur = cur.next;
               }
               return ((Comparable) min).compareTo((Comparable) max) > 0;
+       }
+
+       public int printGreater(E item) {
+              int count = 0;
+              Node<E> cur = head;
+              while(cur != null) {
+                     if (((Comparable)cur.data).compareTo((Comparable) item) > 0) {
+                            System.out.print(cur.data + " ");
+                            count++;
+                     }
+                     cur = cur.next;
+              }
+              return count;
        }
 }
 
