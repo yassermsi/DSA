@@ -17,8 +17,7 @@ class ArrayStack<E> implements StackInt<E> {
        private int topOfStack;
 
        public ArrayStack() {
-              theData = (E[]) new Object[INITIAL_CAPACITY];
-              topOfStack = -1;
+              this(INITIAL_CAPACITY);
        }
 
        public ArrayStack(int cap) {
