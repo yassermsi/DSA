@@ -2,7 +2,7 @@ package ArrayLists;
 
 import java.util.Arrays;
 
-class KWArrayList<E> {
+public class KWArrayList<E> {
        private static final int INITIAL_CAPACITY = 10;
        private E[] theData;
        private int size;
@@ -330,7 +330,7 @@ class KWArryApp<E> {
        }
 }
 
-public class KWAL {
+class KWAL {
        public static <E> boolean removeDuplicate(KWArrayList<E> L, E obj) {
               int i;
               for (i = 0; i < L.size(); i++)
@@ -354,20 +354,5 @@ public class KWAL {
                      if (((Comparable) array.get(i)).compareTo((Comparable) min) < 0)
                             min = array.get(i);
               return ((Comparable) min).compareTo((Comparable) max) > 0;
-       }
-
-       public static void main(String[] args) {
-              KWArrayList<Integer> list = new KWArrayList<>();
-              list.add(1);
-              list.add(7);
-              list.add(22);
-              list.add(1, 100);
-              for (int i = 0; i < list.size(); i++)
-                     System.out.print(list.get(i) + " ");
-              list.set(2, 50);
-              list.remove(1);
-              System.out.println();
-              for (int i = 0; i < list.size(); i++)
-                     System.out.print(list.get(i) + " ");
        }
 }

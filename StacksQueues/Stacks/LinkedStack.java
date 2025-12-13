@@ -1,6 +1,8 @@
+package Stacks;
+
 import java.util.*;
 
-public class LS<E> implements StackInt<E> {
+public class LinkedStack<E> implements StackInt<E> {
        Node<E> topOfStack;
 
        private static class Node<E> {
@@ -18,11 +20,11 @@ public class LS<E> implements StackInt<E> {
               }
        }
 
-       public LS() {
+       public LinkedStack() {
               topOfStack = null;
        }
 
-       public LS(LS<E> other) {
+       public LinkedStack(LinkedStack<E> other) {
               if (other.isEmpty())
                      topOfStack = null;
               else {

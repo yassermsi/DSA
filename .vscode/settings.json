@@ -1,6 +1,8 @@
 {
        "java.project.sourcePaths": 
        [
+              "Graphs",
+              "Trees",
               "Project",
               "StacksQueues",
               "Lists",

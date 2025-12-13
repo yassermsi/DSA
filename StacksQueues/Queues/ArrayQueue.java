@@ -1,7 +1,9 @@
+package Queues;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-class ArrayQueue<E> {
+public class ArrayQueue<E> {
        private E[] theData;
        private int front;
        private int rear;
@@ -147,7 +149,7 @@ class ArrayQueue<E> {
        }
 }
 
-public class AQ {
+class AQ {
 
        public static <E> boolean SplitQueue(ArrayQueue<E> q1, ArrayQueue<E> q2, ArrayQueue<E> q3) {
               ArrayQueue<E> q = new ArrayQueue<>(q1);
@@ -259,9 +261,5 @@ public class AQ {
                * }
                * }
                */
-       }
-
-       public static void main(String[] args) {
-
        }
 }

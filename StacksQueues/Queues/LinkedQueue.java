@@ -1,7 +1,9 @@
+package Queues;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-class LinkedQueue<E> {
+public class LinkedQueue<E> {
        private Node<E> front;
        private Node<E> rear;
        int size;
@@ -92,8 +94,4 @@ class LinkedQueue<E> {
                      throw new UnsupportedOperationException();
               }
        }
-}
-
-public class LQ {
-
 }
