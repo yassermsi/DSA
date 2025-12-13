@@ -1,6 +1,7 @@
 {
        "java.project.sourcePaths": 
        [
+              "HashTables",
               "Graphs",
               "Trees",
               "Project",
