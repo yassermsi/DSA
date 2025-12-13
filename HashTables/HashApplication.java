@@ -11,8 +11,8 @@ public class HashApplication {
                      System.out.println("Location " + i + ": " + ht1.get(i));
               int loc = ht1.quadraticSearch(27);
               if (loc != -1)
-                     System.out.println("Found in location "  + loc);
-              else 
+                     System.out.println("Found in location " + loc);
+              else
                      System.out.println("NOT FOUND!");
        }
 }

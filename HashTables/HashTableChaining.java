@@ -44,7 +44,7 @@ public class HashTableChaining<E extends Integer> {
               while (node != null)
                      if (node.data.equals(key))
                             return loc;
-                     else 
+                     else
                             node = node.next;
               return -1;
        }
@@ -72,7 +72,7 @@ public class HashTableChaining<E extends Integer> {
               }
               Node<E> prev = node;
               node = node.next;
-              while (node != null) 
+              while (node != null)
                      if (node.data.equals(item)) {
                             prev.next = node.next;
                             node = null;

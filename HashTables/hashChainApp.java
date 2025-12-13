@@ -11,8 +11,8 @@ public class hashChainApp {
                      System.out.println("Location " + i + ": " + ht1.toString(i));
               int loc = ht1.search(27);
               if (loc != -1)
-                     System.out.println("Found in location "  + loc);
-              else 
+                     System.out.println("Found in location " + loc);
+              else
                      System.out.println("NOT FOUND!");
        }
 }
