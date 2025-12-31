@@ -36,7 +36,7 @@ public class ArrayStack<E> implements StackInt<E> {
               this.topOfStack = other.topOfStack;
        }
 
-       public void reallocate() {
+       private void reallocate() {
               int length = theData.length * 2;
               theData = Arrays.copyOf(theData, length);
        }
@@ -73,26 +73,26 @@ public class ArrayStack<E> implements StackInt<E> {
 
 class StackEx {
        public static void rearrangeStacks(ArrayStack<Integer> s1, ArrayStack<Integer> s2) {
-              ArrayStack<Integer> s3 = new ArrayStack<>();
-              ArrayStack<Integer> s4 = new ArrayStack<>();
+              ArrayStack<Integer> positive = new ArrayStack<>();
+              ArrayStack<Integer> negative = new ArrayStack<>();
               while (!s1.isEmpty()) {
                      int num = s1.pop();
                      if (num > 0)
-                            s3.push(num);
+                            positive.push(num);
                      else if (num < 0)
-                            s4.push(num);
+                            negative.push(num);
               }
               while (!s2.isEmpty()) {
                      int num = s2.pop();
                      if (num > 0)
-                            s3.push(num);
+                            positive.push(num);
                      else if (num < 0)
-                            s4.push(num);
+                            negative.push(num);
               }
-              while (!s3.isEmpty())
-                     s1.push(s3.pop());
-              while (!s4.isEmpty())
-                     s2.push(s4.pop());
+              while (!positive.isEmpty())
+                     s1.push(positive.pop());
+              while (!negative.isEmpty())
+                     s2.push(negative.pop());
        }
 
        public static <E> boolean compareStacks(ArrayStack<E> st1, ArrayStack<E> st2) {
@@ -108,6 +108,25 @@ class StackEx {
                      if (!st1Copy.pop().equals(st2Rev.pop()))
                             return false;
               return true;
+       }
+
+       public static <E> int countAndMoveToTop(ArrayStack<E> S1, E item) {
+              ArrayStack<E> smaller = new ArrayStack<>();
+              ArrayStack<E> greater = new ArrayStack<>();
+              int count = 0;
+              while (!S1.isEmpty()) {
+                     E v = S1.pop();
+                     if (((Comparable) v).compareTo((Comparable) item) < 0) {
+                            smaller.push(v);
+                            count++;
+                     } else
+                            greater.push(v);
+              }
+              while (!greater.isEmpty())
+                     S1.push(greater.pop());
+              while (!smaller.isEmpty())
+                     S1.push(smaller.pop());
+              return count;
        }
 }
 
@@ -126,20 +145,19 @@ class StackApplication {
        public static <E> boolean stackShuffle(ArrayStack<E> s1, E value) {
               if (s1.isEmpty())
                      return false;
-              ArrayStack<E> s2 = new ArrayStack<>();
-              ArrayStack<E> s3 = new ArrayStack<>();
+              ArrayStack<E> greater = new ArrayStack<>();
+              ArrayStack<E> smaller = new ArrayStack<>();
               while (!s1.isEmpty()) {
                      E item = s1.pop();
                      if (((Comparable) item).compareTo((Comparable) value) > 0)
-                            s2.push(item);
+                            greater.push(item);
                      else
-                            s3.push(item);
+                            smaller.push(item);
               }
-
-              while (!s3.isEmpty())
-                     s1.push(s3.pop());
-              while (!s2.isEmpty())
-                     s1.push(s2.pop());
+              while (!smaller.isEmpty())
+                     s1.push(smaller.pop());
+              while (!greater.isEmpty())
+                     s1.push(greater.pop());
               return true;
        }
 
@@ -195,5 +213,31 @@ class StackApplication {
               }
               while (!temp.isEmpty())
                      st3.push(temp.pop());
+       }
+
+       public static <E> void constructStack(ArrayStack<E> s1, ArrayStack<E> s2, ArrayStack<E> s3) {
+              ArrayStack<E> s1Copy = new ArrayStack<>(s1);
+              ArrayStack<E> s11Copy = new ArrayStack<>(s1);
+              ArrayStack<E> s2Copy = new ArrayStack<>(s2);
+              ArrayStack<E> temp = new ArrayStack<>();
+              E s1Top = null, s1Bottom = null;
+              int count = 0;
+              while (!s1Copy.isEmpty()) {
+                     s1Copy.pop();
+                     count++;
+              }
+              for (int i = 0; i < count && !s11Copy.isEmpty(); i++) {
+                     E item = s11Copy.pop();
+                     if (i == 0)
+                            s1Top = item;
+                     else if (i == count - 1)
+                            s1Bottom = item;
+              }
+              while (!s2Copy.isEmpty())
+                     temp.push(s2Copy.pop());
+              s3.push(s1Top);
+              while (!temp.isEmpty())
+                     s3.push(temp.pop());
+              s3.push(s1Bottom);
        }
 }

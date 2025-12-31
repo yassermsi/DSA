@@ -172,11 +172,10 @@ public class BinaryTree<E> {
        private int countOneChild(Node<E> node) {
               if (node == null)
                      return 0;
-              else 
-                     if ((node.left != null && node.right == null) || (node.left == null && node.right != null))
-                            return (1 + countOneChild(node.left) + countOneChild(node.right));
-                     else
-                            return countOneChild(node.left) + countOneChild(node.right);
+              else if ((node.left != null && node.right == null) || (node.left == null && node.right != null))
+                     return (1 + countOneChild(node.left) + countOneChild(node.right));
+              else
+                     return countOneChild(node.left) + countOneChild(node.right);
        }
 
        public int countChild() {
@@ -213,5 +212,78 @@ public class BinaryTree<E> {
               if (node.left != null || node.right != null)
                      return (1 + countNonLeaf(node.left) + countNonLeaf(node.right));
               return countNonLeaf(node.left) + countNonLeaf(node.right);
+       }
+
+       public int countLeafOrLeft() {
+              return countLeafOrLeftChild(root);
+       }
+
+       private int countLeafOrLeftChild(Node<E> node) {
+              if (node == null)
+                     return 0;
+              else if ((node.left != null && node.right == null) || (node.left == null && node.right == null))
+                     return 1 + countLeafOrLeftChild(node.left) + countLeafOrLeftChild(node.right);
+              else
+                     return countLeafOrLeftChild(node.left) + countLeafOrLeftChild(node.right);
+       }
+
+       public int sumNodesBT() {
+              return sumNodesWithOneChild(root);
+       }
+
+       private int sumNodesWithOneChild(Node<E> node) {
+              if (node == null)
+                     return 0;
+              else if ((node.left != null && node.right == null) || (node.left == null && node.right != null))
+                     return (Integer) node.data;
+              else
+                     return sumNodesWithOneChild(node.left) + sumNodesWithOneChild(node.right);
+       }
+
+       public int SumLeafRight() {
+              return SumLeafAndRChild(root);
+       }
+
+       private int SumLeafAndRChild(Node<E> node) {
+              if (node == null)
+                     return 0;
+              else if ((node.left == null && node.right == null) || (node.left == null && node.right != null))
+                     return (Integer) node.data + SumLeafAndRChild(node.right);
+              else
+                     return SumLeafAndRChild(node.left) + SumLeafAndRChild(node.right);
+       }
+
+       public int countDegreeBT() {
+              return countDegree(root);
+       }
+
+       private int countDegree(Node<E> node) {
+              if (node == null)
+                     return 0;
+              else if (node.left == null && node.right == null)
+                     return 0;
+              else if ((node.left != null && node.right == null) || (node.left == null && node.right != null))
+                     return 1 + countDegree(node.left) + countDegree(node.right);
+              else if (node.left != null && node.right != null)
+                     return 2 + countDegree(node.left) + countDegree(node.right);
+              else
+                     return countDegree(node.left) + countDegree(node.right);
+       }
+
+       public int countOneChildLeaf() {
+              return countOneChildLeafNodes(root);
+       }
+
+       private int countOneChildLeafNodes(Node<E> node) {
+              if (node == null)
+                     return 0;
+              else if (node.left == null && node.right != null)
+                     return 1 + countOneChildLeafNodes(node.right);
+              else if (node.left != null && node.right == null)
+                     return 1 + countOneChildLeafNodes(node.left);
+              else if (node.left == null && node.right == null)
+                     return 1;
+              else
+                     return countOneChildLeafNodes(node.left) + countOneChildLeafNodes(node.right);
        }
 }

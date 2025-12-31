@@ -44,6 +44,12 @@ public class MusicManager {
               if (this.songs.contains(newSong))
                      return false;
 
+              for (int i = 0; i < songs.size(); i++) {
+                     Song song = songs.get(i);
+                     if (song.getSongID() == newSong.getSongID())
+                            return false;
+              }
+
               this.songs.add(newSong);
               return true;
        }
@@ -92,6 +98,12 @@ public class MusicManager {
 
               if (this.users.contains(newUser))
                      return false;
+
+              for (int i = 0; i < users.size(); i++) {
+                     User user = users.get(i);
+                     if (user.getUserID() == newUser.getUserID())
+                            return false;
+              }
 
               this.users.add(newUser);
               return true;

@@ -1,4 +1,4 @@
-public class HashTableChaining<E extends Integer> {
+public class HashTableChaining<E> {
        private static final int INIL_CAP = 10;
        private Node<E> theData[];
        private int capacity;
@@ -82,5 +82,21 @@ public class HashTableChaining<E extends Integer> {
                             node = node.next;
                      }
               return false;
+       }
+
+       public void insertWithConditionChaining(E item) {
+              int loc = (Integer) item % capacity;
+              Node<E> cur = theData[loc];
+              if (cur == null)
+                     return;
+              if (((Comparable) cur.data).compareTo((Comparable) item) < 0)
+                     return;
+              while (cur.next != null)
+                     cur = cur.next;
+              if (((Comparable) cur.data).compareTo(item) >= 0)
+                     return;
+              Node<E> node = new Node<>(item);
+              node.next = theData[loc];
+              theData[loc] = node;
        }
 }

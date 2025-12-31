@@ -36,7 +36,7 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> {
                             return true;
                      else if (cur.data.compareTo(item) < 0)
                             cur = cur.left;
-                     else 
+                     else
                             cur = cur.right;
               }
               return false;

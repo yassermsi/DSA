@@ -47,6 +47,7 @@ public class HashTable<E extends Integer> {
               int i = 1;
               while (theData[nloc] != null) {
                      nloc = (loc + i * i) % capacity;
+                     // (int) Math.pow(i, 2)
                      i++;
               }
               size++;
@@ -59,15 +60,20 @@ public class HashTable<E extends Integer> {
               int loc = (Integer) key % capacity;
               int i = 1;
               int nloc = loc;
-              while (theData[nloc] != null) {
+              boolean found = false;
+              while (theData[nloc] != null && !found) {
                      if (theData[nloc].equals(key))
-                            return nloc;
-                     else {
+                            found = true;
+                     else
                             nloc = (loc + i) % capacity;
-                            i++;
-                     }
+                     if (nloc == loc)
+                            break;
+                     i++;
               }
-              return -1;
+              if (found)
+                     return nloc;
+              else
+                     return -1;
        }
 
        public int quadraticSearch(E key) {
@@ -75,7 +81,7 @@ public class HashTable<E extends Integer> {
                      return -1;
               int loc = (Integer) key % capacity;
               int nloc = loc;
-              for (int i = 0; i < capacity; i++)
+              for (int i = 0; i < capacity && nloc != loc; i++)
                      if (theData[nloc].equals(key))
                             return nloc;
                      else
@@ -102,7 +108,6 @@ public class HashTable<E extends Integer> {
                             insertKeyLinear(data);
                             size++;
                      }
-              size--;
               return true;
        }
 
@@ -121,7 +126,6 @@ public class HashTable<E extends Integer> {
                             insertKeyQuadratic(theData1[i]);
                             size++;
                      }
-              size--;
               return true;
        }
 }

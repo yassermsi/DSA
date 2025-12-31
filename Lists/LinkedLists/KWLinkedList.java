@@ -4,6 +4,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 public class KWLinkedList<E> {
+
        private Node<E> head;
        private Node<E> tail;
        int size;
@@ -276,8 +277,8 @@ public class KWLinkedList<E> {
                      head.data = null;
                      head = head.next;
               } else if (cur.equals(tail)) {
-                     tail.data = null;
                      tail = tail.prev;
+                     tail.next = null;
               } else {
                      cur.prev.next = cur.next;
                      cur.next.prev = cur.prev;
@@ -312,8 +313,8 @@ public class KWLinkedList<E> {
                      System.out.println("List is empty or has one node");
               else {
                      E item1, item2;
-                     KWListIter iter1 = new KWListIter();
-                     KWListIter iter2 = new KWListIter(size);
+                     ListIterator<E> iter1 = listIterator();
+                     ListIterator<E> iter2 = listIterator(size);
                      for (int i = 0; i < size / 2; i++) {
                             item1 = iter1.next();
                             item2 = iter2.previous();
@@ -337,9 +338,9 @@ public class KWLinkedList<E> {
        }
 
        public boolean addWithCondition(E item1, E item2) {
-              if (head == null)
+              ListIterator<E> iter = listIterator();
+              if (!iter.hasNext())
                      return false;
-              KWListIter iter = new KWListIter();
               while (iter.hasNext())
                      if (iter.next().equals(item1)) {
                             iter.previous();
@@ -364,11 +365,12 @@ public class KWLinkedList<E> {
        public boolean findAll(E item, KWLinkedList<E> list2) {
               if (head == null)
                      return false;
-              KWListIter iter = new KWListIter();
-              while (iter.hasNext()) {
-                     E item1 = iter.next();
+              ListIterator<E> iter1 = listIterator();
+              ListIterator<E> iter2 = list2.listIterator();
+              while (iter1.hasNext()) {
+                     E item1 = iter1.next();
                      if (((Comparable) item1).compareTo((Comparable) item) < 0)
-                            list2.add(item1);
+                            iter2.add(item1);
               }
               if (list2.size == 0)
                      return false;
@@ -395,13 +397,15 @@ public class KWLinkedList<E> {
        }
 
        public int lastIndexOf(E item) {
-              KWListIter iter = new KWListIter(size);
+              ListIterator<E> iter = listIterator(size);
               int index = iter.previousIndex();
-              while (iter.hasPrevious())
-                     if (iter.previous().equals(item))
+              while (iter.hasPrevious()) {
+                     E item1 = iter.previous();
+                     if (item1.equals(item))
                             return index;
                      else
                             index--;
+              }
               return -1;
               /*
                * Node<E> cur = tail;
@@ -409,6 +413,17 @@ public class KWLinkedList<E> {
                * if (cur.data.equals(item))
                * return i;
                * cur = cur.prev;
+               * }
+               */
+              /*
+               * Node<E> cur = tail;
+               * while (cur != null) {
+               * if (cur.data.equals(item))
+               * return index;
+               * else {
+               * index--;
+               * cur = cur.prev;
+               * }
                * }
                */
        }
@@ -470,14 +485,140 @@ public class KWLinkedList<E> {
                * addLast(elem);
                */
        }
+
+       public void deleteInsert(E item) {
+              Node<E> cur = head;
+              for (int i = 0; i < size / 2 - 1; i++)
+                     cur = cur.next;
+              cur.prev.next = cur.next;
+              cur.next.prev = cur.prev;
+              /*
+               * Node<E> fast = head;
+               * Node<E> slow = fast;
+               * while (fast != null && fast.next != null) {
+               * slow = slow.next;
+               * fast = fast.next.next;
+               * }
+               * slow.next.prev = slow.prev;
+               * slow.prev.next = slow.next;
+               */
+              Node<E> node = new Node<>(item);
+              node.prev = tail;
+              tail.next = node;
+              tail = node;
+       }
+
+       public void InsertFirstLast(E item) {
+              Node<E> node = new Node<>(item);
+              if (head == null && tail == null) {
+                     head = node;
+                     tail = node;
+                     size++;
+              } else {
+                     Node<E> newNode = node;
+                     node.next = head;
+                     head.prev = node;
+                     head = node;
+                     newNode.prev = tail;
+                     tail.next = newNode;
+                     tail = newNode;
+                     size += 2;
+              }
+       }
+
+       public boolean replace(E searchItem, E repItem) {
+              ListIterator<E> iter = listIterator();
+              while (iter.hasNext()) {
+                     E item = iter.next();
+                     if (item.equals(searchItem)) {
+                            iter.set(repItem);
+                            return true;
+                     }
+              }
+              return false;
+       }
 }
 
 class Application<E> {
        public void insertInMiddle(KWLinkedList<E> l, E value) {
               ListIterator<E> iter = l.listIterator();
-              for (int i = 0; i < l.size(); i++)
+              for (int i = 0; i < l.size() / 2; i++)
                      iter.next();
               iter.add(value);
        }
+
+       public static void setMinByAverage(KWLinkedList<Double> list) {
+              ListIterator<Double> iter = list.listIterator();
+              if (!iter.hasNext())
+                     return;
+              double sum = 0;
+              int count = 0;
+              while (iter.hasNext()) {
+                     sum += iter.next();
+                     count++;
+              }
+              double avg = sum / count;
+              iter = list.listIterator();
+              double min = iter.next();
+              while (iter.hasNext()) {
+                     double d = iter.next();
+                     if (min > d)
+                            min = d;
+              }
+              iter = list.listIterator();
+              while (iter.hasNext())
+                     if (iter.next().equals(min))
+                            iter.set(avg);
+       }
+
+       public static <E> void display2Directions(KWLinkedList<E> list, int n) {
+              ListIterator<E> iter = list.listIterator();
+              int size = 0;
+              while (iter.hasNext())
+                     size++;
+              if (n < 0 || n >= size) {
+                     System.out.println("Invalid Index");
+                     return;
+              }
+              iter = list.listIterator(n);
+              iter.next();
+              int right = 0;
+              int left = 0;
+              while (iter.hasNext())
+                     right++;
+              iter = list.listIterator(n);
+              while (iter.hasPrevious())
+                     left++;
+              int min = (left > right) ? left : right;
+              int count = 0;
+              iter = list.listIterator(n);
+              for (int i = 0; i < min; i++) {
+                     iter = list.listIterator(n);
+                     for (int j = 0; j < count; j++)
+                            iter.next();
+                     System.out.print(iter.next() + " ");
+                     iter = list.listIterator(n);
+                     for (int k = 0; k < count; k++)
+                            iter.previous();
+                     System.out.print(iter.previous() + " ");
+              }
+              System.out.println();
+       }
 }
 
+class DoublyLinkedListEx {
+       public static void insertGreaterElements(KWLinkedList<Integer> l1, KWLinkedList<Integer> l2,
+                     KWLinkedList<Integer> l3) {
+              ListIterator<Integer> iter1 = l1.listIterator();
+              ListIterator<Integer> iter2 = l2.listIterator();
+              ListIterator<Integer> iter3 = l3.listIterator();
+              while (iter1.hasNext()) {
+                     int a = iter1.next();
+                     int b = iter2.next();
+                     if (a > b)
+                            iter3.add(a);
+                     else if (a < b)
+                            iter3.add(b);
+              }
+       }
+}

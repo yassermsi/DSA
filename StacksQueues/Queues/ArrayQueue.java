@@ -55,15 +55,15 @@ public class ArrayQueue<E> {
        public void reallocate() {
               int newCap = capacity * 2;
               E[] newData = (E[]) new Object[newCap];
-              int idx = front;
+              int index = front;
               for (int i = 0; i < size; i++) {
-                     newData[idx] = theData[idx];
-                     idx = (idx + 1) % capacity;
+                     newData[index] = theData[index];
+                     index = (index + 1) % capacity;
               }
               front = 0;
-              rear = size - 1;
-              theData = newData;
+              rear = capacity - 1;
               capacity = newCap;
+              theData = newData;
        }
 
        public E peek() {
@@ -119,17 +119,17 @@ public class ArrayQueue<E> {
 
        public void RemoveFromQueue(E item, ArrayQueue<E> q1) {
               ArrayQueue<E> qtemp = new ArrayQueue<>();
-              if (this.isEmpty())
+              if (size == 0)
                      return;
               E value;
-              while (!this.isEmpty()) {
-                     value = this.poll();
+              while (!isEmpty()) {
+                     value = poll();
                      if (((Comparable) value).compareTo((Comparable) item) > 0)
                             q1.offer(value);
                      else
                             qtemp.offer(value);
               }
-              while (!qtemp.isEmpty())
+              while (qtemp.size != 0)
                      this.offer(qtemp.poll());
        }
 
@@ -150,7 +150,6 @@ public class ArrayQueue<E> {
 }
 
 class AQ {
-
        public static <E> boolean SplitQueue(ArrayQueue<E> q1, ArrayQueue<E> q2, ArrayQueue<E> q3) {
               ArrayQueue<E> q = new ArrayQueue<>(q1);
               if (q.isEmpty())
@@ -164,6 +163,8 @@ class AQ {
               return true;
               /*
                * Iterator<E> iter = q1.iterator();
+               * if (!iter.hasNext())
+               * return false;
                * while (iter.hasNext()) {
                * q2.offer(iter.next());
                * if (iter.hasNext())
@@ -261,5 +262,88 @@ class AQ {
                * }
                * }
                */
+       }
+}
+
+class QueueApplication {
+       public static boolean checkOrderedQueue(ArrayQueue<Integer> queue1) {
+              ArrayQueue<Integer> q1 = new ArrayQueue<>(queue1);
+              while (!q1.isEmpty()) {
+                     int num = q1.poll();
+                     if (num > q1.peek())
+                            return false;
+              }
+              return true;
+              /*
+               * for (int i = 0; i < q1.size(); i++) {
+               * if (q1.poll() > q1.peek())
+               * return false;
+               * }
+               * return true;
+               */
+       }
+
+       public static int prioritizeQueue(ArrayQueue<Integer> q1, ArrayQueue<Integer> q2) {
+              ArrayQueue<Integer> greater = new ArrayQueue<>();
+              ArrayQueue<Integer> amid = new ArrayQueue<>();
+              Iterator<Integer> iter = q1.iterator();
+              int count = 0;
+              while (iter.hasNext()) {
+                     int num = iter.next();
+                     if (num >= 45) {
+                            greater.offer(num);
+                            count++;
+                     } else if (num < 45 && num > 18) {
+                            amid.offer(num);
+                            count++;
+                     }
+              }
+              while (!greater.isEmpty())
+                     q2.offer(greater.poll());
+              while (!amid.isEmpty())
+                     q2.offer(amid.poll());
+              return count;
+       }
+
+       public static <E> int QueueCount(ArrayQueue<E> q1, ArrayQueue<E> q2, ArrayQueue<E> q3) {
+              Iterator<E> iter1 = q1.iterator();
+              Iterator<E> iter2;
+              int count = 0;
+              while (iter1.hasNext()) {
+                     iter2 = q2.iterator();
+                     E v1 = iter1.next();
+                     while (iter2.hasNext()) {
+                            E v2 = iter2.next();
+                            if (v1.equals(v2)) {
+                                   q3.offer(v1);
+                                   count++;
+                            }
+                     }
+              }
+              return count;
+       }
+}
+
+class QueueEx {
+       public static ArrayQueue<Integer> belowAvg(ArrayQueue<Integer> q1) {
+              Iterator<Integer> iter = q1.iterator();
+              int sum = 0, count = 0;
+              while (iter.hasNext()) {
+                     sum += iter.next();
+                     count++;
+              }
+              double avg = sum / count;
+              ArrayQueue<Integer> q2 = new ArrayQueue<>();
+              ArrayQueue<Integer> qtemp = new ArrayQueue<>(q1);
+              while (!q1.isEmpty()) {
+                     int num = qtemp.poll();
+                     if (num < avg)
+                            q2.offer(num);
+                     else
+                            qtemp.offer(num);
+              }
+              while (!qtemp.isEmpty())
+                     q1.offer(qtemp.poll());
+              return q2;
        }
 }

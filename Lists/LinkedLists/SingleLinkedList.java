@@ -14,15 +14,14 @@ public class SingleLinkedList<E> {
                      this.head = null;
                      this.size = 0;
               } else {
-                     Node<E> ptr = list.head;
-                     Node<E> ptr1 = new Node<E>(ptr.data);
-                     this.head = ptr1;
-                     ptr = ptr.next;
-                     while (ptr != null) {
-                            Node<E> ptr2 = new Node<E>(ptr.data);
-                            ptr1.next = ptr2;
-                            ptr1 = ptr2;
-                            ptr = ptr.next;
+                     Node<E> cur = list.head;
+                     Node<E> temp = new Node<>(cur.data);
+                     this.head = temp;
+                     cur = cur.next;
+                     while (cur != null) {
+                            temp.next = new Node<>(cur.data);
+                            temp = temp.next;
+                            cur = cur.next;
                      }
                      this.size = list.size;
               }
@@ -210,15 +209,6 @@ public class SingleLinkedList<E> {
               int count = 0;
               Node<E> cur = head;
               while (cur != null) {
-                     /*
-                      * if (item == null) {
-                      * if (cur.data == null) {
-                      * cur.data = rpItem;
-                      * count++;
-                      * }
-                      * }
-                      * else
-                      */
                      if ((cur.data).equals(item)) {
                             cur.data = rpItem;
                             count++;
@@ -245,26 +235,20 @@ public class SingleLinkedList<E> {
        }
 
        public boolean compareHalfs() {
-              if (isEmpty() || size % 2 != 0)
+              if (size == 0 || size % 2 != 0)
                      return false;
               Node<E> first = head;
-              Node<E> second = getNode(size / 2);
+              Node<E> second = head;
+              for (int i = 0; i < size / 2 && second != null; i++)
+                     second = second.next;
+              // second = getNode(size / 2);
               while (second != null) {
-                     /*
-                      * if (first.data == null) {
-                      * if (second.data != null)
-                      * return false;
-                      * } else if (second.data == null) {
-                      * if (first.data != null)
-                      * return false;
-                      * }
-                      * else
-                      */
-                     if ((first.data).equals(second.data)) {
+                     if (!first.data.equals(second.data))
+                            return false;
+                     else {
                             first = first.next;
                             second = second.next;
-                     } else
-                            return false;
+                     }
               }
               return true;
               /*
@@ -309,28 +293,23 @@ public class SingleLinkedList<E> {
        public boolean removeAll(E item) {
               if (isEmpty())
                      return false;
-              boolean removed = false;
               Node<E> cur = head;
               while (cur != null) {
-                     if ((cur.data).equals(item)) {
+                     if (cur.data.equals(item))
                             remove(item);
-                            removed = true;
-                     }
                      cur = cur.next;
               }
-              return removed;
+              return true;
               /*
                * while (head != null && (head.data).equals(item)) {
                * head = head.next;
                * size--;
-               * removed = true;
                * }
                * Node<E> cur = head;
-               * while (cur != null) {
+               * while (cur.next != null) {
                * if (cur.next != null && (cur.next.data).equals(item)) {
                * cur.next = cur.next.next;
                * size--;
-               * removed = true;
                * } else
                * cur = cur.next;
                * }
@@ -412,6 +391,77 @@ public class SingleLinkedList<E> {
               }
               return count;
        }
+
+       public void insertAfterMax(E item) {
+              Node<E> node = new Node<>(item);
+              Node<E> cur = head;
+              Node<E> refNode = cur;
+              E max = cur.data;
+              cur = cur.next;
+              while (cur != null) {
+                     if (((Comparable) cur.data).compareTo((Comparable) max) > 0) {
+                            max = cur.data;
+                            refNode = cur;
+                     }
+                     cur = cur.next;
+              }
+              node.next = refNode.next;
+              refNode.next = node;
+              size++;
+       }
+
+       public void insertBeforeLargest(E value) {
+              Node<E> temp = head;
+              E max = head.data;
+              while (temp != null) {
+                     if (((Comparable) temp.data).compareTo((Comparable) max) > 0)
+                            max = temp.data;
+                     temp = temp.next;
+              }
+              Node<E> node = new Node<>(value);
+              temp = head;
+              Node<E> prev = temp;
+              temp = temp.next;
+              if (max.equals(head.data)) {
+                     node.next = head;
+                     head = node;
+              } else {
+                     while (temp != null) {
+                            if (temp.data.equals(max)) {
+                                   prev.next = node;
+                                   node.next = temp;
+                            } else {
+                                   prev = temp;
+                                   temp = temp.next;
+                            }
+                     }
+              }
+              size++;
+       }
+
+       public boolean reverseTwoMiddle() {
+              if (size < 4)
+                     return false;
+              Node<E> fast = head;
+              Node<E> slow = fast;
+              while (fast != null && fast.next != null) {
+                     slow = slow.next;
+                     fast = fast.next.next;
+              }
+              Node<E> node = slow;
+              if (((Comparable) node.data).compareTo((Comparable) node.next.data) > 0) {
+                     E temp = node.data;
+                     node.data = node.next.data;
+                     node.next.data = temp;
+                     return true;
+              } else
+                     return false;
+              /*
+               * Node<E> cur = head;
+               * for (int i = 0; i < size / 2 - 1; i++)
+               * cur = cur.next;
+               */
+       }
 }
 
 class Application {
@@ -420,5 +470,6 @@ class Application {
                      SL.add(item);
               else
                      SL.add(SL.size() - 1, item);
+              // SL.add(item);
        }
 }
